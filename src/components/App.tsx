@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import {
+  List,
+  Divider,
+  Container,
+  Typography
+} from '@material-ui/core';
+import { withStyles, createStyles } from '@material-ui/core/styles';
+
 import { IPost, IPostComment } from '../store/types/posts';
 import { IAppState } from '../store/types/store';
 import { setPosts, addComment } from '../store/actions/posts.actions';
@@ -12,7 +21,17 @@ interface IProps {
   //Dispatch
   setPosts: Function;
   addComment: Function;
+  classes: {
+    list: string;
+  };
 }
+
+const useStyles = createStyles({
+  list: {
+    width: '100%',
+    maxWidth: 'unset',
+  }
+});
 
 class App extends Component<IProps> {
   constructor(props: IProps) {
@@ -62,15 +81,25 @@ class App extends Component<IProps> {
 
   render() {
     return (
-      <div>
+      <Container>
+        <Typography variant="h3">Posts</Typography>
         {
           !!this.props.posts && (
-            this.props.posts.map((post: IPost, postIndex: number) => (
-              <Post post={post} key={`post_${postIndex}`} index={postIndex} />
-            ))
+            <List className={this.props.classes.list}>
+              {
+                this.props.posts.map((post: IPost, postIndex: number) => (
+                  <>
+                    <Post post={post} key={`post_${postIndex}`} index={postIndex} />
+                    {
+                      postIndex < this.props.posts.length - 1 && <Divider />
+                    }
+                  </>
+                ))
+              }
+            </List>
           )
         }
-      </div>
+      </Container>
     );
   }
 }
@@ -84,4 +113,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   addComment: (id: number, comment: IPostComment) => dispatch(addComment(id, comment))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(App));
