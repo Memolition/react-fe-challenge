@@ -88,12 +88,12 @@ class App extends Component<IProps> {
             <List className={this.props.classes.list}>
               {
                 this.props.posts.map((post: IPost, postIndex: number) => (
-                  <>
-                    <Post post={post} key={`post_${postIndex}`} index={postIndex} />
+                  <React.Fragment key={`post_${postIndex}`}>
+                    <Post post={post} index={postIndex} />
                     {
                       postIndex < this.props.posts.length - 1 && <Divider />
                     }
-                  </>
+                  </React.Fragment>
                 ))
               }
             </List>

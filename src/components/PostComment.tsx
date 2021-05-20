@@ -50,7 +50,7 @@ class PostComment extends Component<IProps, {}> {
       <Paper onClick={(e) => { e.stopPropagation(); e.preventDefault(); }} elevation={0} className={this.classes.wrapper}>
         <Box className={this.classes.header} flexDirection="row">
           <Typography component="h3" className={this.classes.title}>{this.props.comment.name}</Typography>
-          <Typography component="caption" className={this.classes.email}>- {this.props.comment.email}</Typography>
+          <Typography component="span" className={this.classes.email}>- {this.props.comment.email}</Typography>
         </Box>
         <Typography component="p">{this.props.comment.body}</Typography>
       </Paper>

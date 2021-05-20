@@ -3,7 +3,7 @@ export const ADD_COMMENT = 'ADD_COMMENT';
 
 export interface IPostComment {
   postId: number;
-  id: number;
+  id?: number;
   name: string;
   email: string;
   body: string;

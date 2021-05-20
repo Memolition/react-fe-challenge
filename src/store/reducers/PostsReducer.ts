@@ -18,17 +18,17 @@ const PostsReducer: Reducer<IPostsState> = (state: IPostsState = InitialPostsSta
     case ADD_COMMENT:
       return {
         ...state,
-        posts: state.posts.map((post: IPost) => {
+        posts: [...(state.posts.map((post: IPost) => {
           if (post.id === action.id) {
             if (!post.comments) {
               post.comments = [];
             }
 
-            post.comments.push(action.comment);
+            post.comments.unshift(action.comment);
           }
 
           return post;
-        })
+        }))]
       }
     default:
       return state;
