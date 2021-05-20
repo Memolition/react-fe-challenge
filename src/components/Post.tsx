@@ -33,6 +33,7 @@ interface IProps {
     primaryText: string;
     secondaryText: string;
     itemContent: string;
+    formCollapse: string;
   },
 
   addComment: Function;
@@ -76,6 +77,11 @@ const useStyles = createStyles({
   itemContent: {
     width: '100%',
     display: 'flex',
+  },
+  formCollapse: {
+    width: '100%',
+    paddingTop: 10,
+    paddingBottom: 10,
   }
 });
 
@@ -146,7 +152,7 @@ class Post extends Component<IProps, IState> {
         </ListItem>
         <Collapse
           in={this.state.addComment}
-          style={{ width: '100%' }}
+          className={this.props.classes.formCollapse}
         >
           <Box flexDirection="row">
             <FormControl style={{ flex: 1 }} onClick={(e) => {
@@ -174,7 +180,7 @@ class Post extends Component<IProps, IState> {
               />
             </FormControl>
           </Box>
-          <FormControl style={{ marginTop: 10, marginBottom: 10, width: '100%', }} onClick={(e) => {
+          <FormControl style={{ marginTop: 10, width: '100%', }} onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
           }}>
