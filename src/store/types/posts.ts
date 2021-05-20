@@ -1,7 +1,8 @@
 export const SET_POSTS = 'SET_POSTS';
+export const ADD_COMMENT = 'ADD_COMMENT';
 
 export interface IPostComment {
-  post: number;
+  postId: number;
   id: number;
   name: string;
   email: string;
@@ -9,7 +10,7 @@ export interface IPostComment {
 }
 
 export interface IPost {
-  user: number;
+  userId: number;
   id: number;
   title: string;
   body: string;

@@ -4,6 +4,7 @@ import {
   Paper,
   Divider,
   Typography,
+  Collapse,
 } from '@material-ui/core';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import { IPost, IPostComment } from '../store/types/posts';
@@ -17,30 +18,46 @@ interface IProps {
   }
 }
 
+interface IState {
+  viewComments: boolean;
+}
+
 const useStyles = createStyles({
   wrapper: {
     marginBottom: 15,
     padding: 10,
+    cursor: 'pointer',
   }
 });
 
-class Post extends Component<IProps, {}> {
+class Post extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
-    console.log(this.props.post.comments, this.props.post.comments?.length);
+    this.state = {
+      viewComments: false
+    };
   }
-
 
   render() {
     return (
-      <Paper variant="outlined" className={this.props.classes.wrapper}>
+      <Paper
+        variant="outlined"
+        className={this.props.classes.wrapper}
+        onClick={() => {
+          this.setState((prevState) => ({
+            viewComments: !prevState.viewComments
+          }))
+        }}
+      >
         <Typography component="h3">{this.props.post.title} </Typography>
-        <Divider light />
         {
           !!this.props.post.comments && this.props.post.comments.length > 0 && (
             this.props.post.comments.map((comment: IPostComment, commentIndex: number) => (
-              <PostComment comment={comment} key={`post_${this.props.index}_comment_${commentIndex}`} />
+              <Collapse in={this.state.viewComments} key={`post_${this.props.index}_comment_${commentIndex}`}>
+                <Divider light />
+                <PostComment comment={comment} />
+              </Collapse>
             ))
           )
         }
