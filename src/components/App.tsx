@@ -52,10 +52,7 @@ class App extends Component<IProps> {
           if (!!comment && !!comment.postId) {
             const currentPost = posts.find((post: IPost) => post.id === comment.postId);
             if (!!currentPost) {
-              if (!currentPost.comments) {
-                currentPost.comments = [];
-              }
-
+              currentPost.comments = currentPost.comments || [];
               currentPost.comments.push(comment);
             }
           }
