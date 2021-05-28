@@ -6,6 +6,7 @@ import {
   InitialPostsState,
   SET_POSTS,
   ADD_COMMENT,
+  ADD_POST,
 } from '../types/posts';
 
 const PostsReducer: Reducer<IPostsState> = (state: IPostsState = InitialPostsState, action) => {
@@ -14,6 +15,11 @@ const PostsReducer: Reducer<IPostsState> = (state: IPostsState = InitialPostsSta
       return {
         ...state,
         posts: action.posts
+      }
+    case ADD_POST:
+      return {
+        ...state,
+        posts: [action.post, ...state.posts]
       }
     case ADD_COMMENT:
       return {

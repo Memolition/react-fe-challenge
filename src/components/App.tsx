@@ -2,17 +2,22 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import {
+  Box,
+  Fab,
   List,
   Divider,
   Container,
-  Typography
+  Typography,
+  IconButton
 } from '@material-ui/core';
 import { withStyles, createStyles } from '@material-ui/core/styles';
+import { AddCircle, HighlightOff } from '@material-ui/icons';
 
 import { IPost, IPostComment } from '../store/types/posts';
 import { IAppState } from '../store/types/store';
 import { setPosts, addComment } from '../store/actions/posts.actions';
 import Post from './Post';
+import PostForm from './PostForm';
 
 interface IProps {
   //State
@@ -23,19 +28,35 @@ interface IProps {
   addComment: Function;
   classes: {
     list: string;
+    headRow: string;
   };
+}
+
+interface IState {
+  fetching: boolean;
+  addPost: boolean;
 }
 
 const useStyles = createStyles({
   list: {
     width: '100%',
     maxWidth: 'unset',
+  },
+  headRow: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   }
 });
 
-class App extends Component<IProps> {
+class App extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+
+    this.state = {
+      fetching: false,
+      addPost: false,
+    }
 
     this.fetchPosts = this.fetchPosts.bind(this);
     this.fetchComments = this.fetchComments.bind(this);
@@ -73,15 +94,42 @@ class App extends Component<IProps> {
   }
 
   async componentDidMount() {
+    this.setState({
+      fetching: true,
+    });
     await this.fetchPosts();
+
+    this.setState({
+      fetching: false,
+    })
   }
 
   render() {
     return (
-      <Container>
-        <Typography variant="h3">Posts</Typography>
+      <Container style={{
+        paddingTop: 15
+      }}>
+        <Box className={this.props.classes.headRow} flexDirection="row">
+          <Typography variant="h3">Posts</Typography>
+          <Fab color="secondary" onClick={() => {
+            this.setState((prevState) => ({
+              addPost: !prevState.addPost
+            }))
+          }}>
+            {this.state.addPost ? <HighlightOff /> : <AddCircle />}
+          </Fab>
+        </Box>
+        <PostForm
+          in={this.state.addPost}
+          id={!!this.props.posts && this.props.posts.length > 0 ? this.props.posts.length + 1 : 1}
+          callback={() => {
+            this.setState({
+              addPost: false,
+            })
+          }}
+        />
         {
-          !!this.props.posts && (
+          !!this.props.posts && !this.state.fetching ? (
             <List className={this.props.classes.list}>
               {
                 this.props.posts.map((post: IPost, postIndex: number) => (
@@ -94,6 +142,10 @@ class App extends Component<IProps> {
                 ))
               }
             </List>
+          ) : (
+            <Typography>
+              { this.state.fetching ? 'Loading posts...' : 'No posts available.'}
+            </Typography>
           )
         }
       </Container>
