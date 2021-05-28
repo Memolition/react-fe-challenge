@@ -8,6 +8,12 @@ const htmlPlugin = new HtmlWebpackPlugin({
 
 module.exports = {
   mode: "development",
+  watch: true,
+  devServer: {
+    open: true,
+    contentBase: path.join(__dirname, 'dist'),
+    port: 9000,
+  },
   entry: path.join(__dirname, 'src', 'index.tsx'),
   output: {
     path: path.join(__dirname, 'dist'),
@@ -18,7 +24,6 @@ module.exports = {
       ".tsx", ".ts", ".js", ".jsx",
     ]
   },
-  watch: true,
   module: {
     rules: [
       {
